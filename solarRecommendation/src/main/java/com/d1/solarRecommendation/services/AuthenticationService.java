@@ -7,6 +7,8 @@ import com.d1.solarRecommendation.services.dtos.RegisterUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,8 @@ public class AuthenticationService {
 
     public User authenticate(LoginUserDto input) {
         //TODO: Handles the process of verifying user credentials
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword()));
+        Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword()));
+
         return userRepository.findByEmail(input.getEmail()).orElseThrow();
     }
 }

@@ -2,11 +2,12 @@ package com.d1.solarRecommendation.repositories;
 
 import com.d1.solarRecommendation.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-@Repository
-public interface UserRepository extends JpaRepository<User,Integer> {
-    Optional<User> findByEmail(String email);//TODO: To be implemented for user authentication
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+    Optional<User> findById(@Param("id")Long id);
+
 }

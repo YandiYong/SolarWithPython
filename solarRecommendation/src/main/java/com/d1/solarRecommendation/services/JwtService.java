@@ -47,16 +47,16 @@ public class JwtService {//TODO:To generate, decode, or validate a JSON Web toke
    return  jwtExpiration;
   }
 
-  private String buildToken(Map<String,Object> extractClaims, UserDetails userDetails,Long expiration){
-   return Jwts
-           .builder()
-           .setClaims(extractClaims)
-           .setSubject(userDetails.getUsername())
-           .setIssuedAt(new Date(System.currentTimeMillis()))
-           .setExpiration(new Date(System.currentTimeMillis() + expiration))
-           .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-           .compact();
-  }
+    private String buildToken(Map<String, Object> extractClaims, UserDetails userDetails, Long expiration) {
+        return Jwts
+                .builder()
+                .setClaims(extractClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
 
   public  boolean isTokenValid(String token, UserDetails userDetails){
    final  String username = extractUsername(token);

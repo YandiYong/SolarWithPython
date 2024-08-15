@@ -3,24 +3,24 @@ package com.d1.solarRecommendation.controllers;
 import com.d1.solarRecommendation.entities.User;
 import com.d1.solarRecommendation.services.AuthenticationService;
 import com.d1.solarRecommendation.services.JwtService;
+import com.d1.solarRecommendation.services.UserService;
 import com.d1.solarRecommendation.services.dtos.LoginUserDto;
 import com.d1.solarRecommendation.services.dtos.RegisterUserDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:4200/**", allowCredentials = "true")
 @RestController
 public class AuthenticationController {
 
     private final JwtService jwtService;
-
+    private final UserService userService;
     private final AuthenticationService authenticationService;
 
-    public AuthenticationController(JwtService jwtService,AuthenticationService authenticationService){
+    public AuthenticationController(JwtService jwtService,AuthenticationService authenticationService,UserService userService){
         this.authenticationService = authenticationService;
+        this.userService = userService;
         this.jwtService = jwtService;
     }
 
@@ -41,6 +41,9 @@ public class AuthenticationController {
        loginResponse.setExpiresIn(jwtService.getExpirationTime());
 
         return ResponseEntity.ok(loginResponse);
+
     }
+
+
 
 }

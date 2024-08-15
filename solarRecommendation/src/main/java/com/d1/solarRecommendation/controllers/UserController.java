@@ -1,17 +1,18 @@
 package com.d1.solarRecommendation.controllers;
 
 
+import com.d1.solarRecommendation.entities.Appliances;
 import com.d1.solarRecommendation.entities.User;
+import com.d1.solarRecommendation.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:4200/**", allowCredentials = "true")
 @RestController
 public class UserController {
 
@@ -26,6 +27,14 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         return ResponseEntity.ok(currentUser);
+    }
+
+
+
+    @PostMapping
+    public ResponseEntity<User> addUser(@RequestBody User user){
+        User saveUser = userService.addApp(user);
+        return ResponseEntity.ok(saveUser);
     }
 
 
