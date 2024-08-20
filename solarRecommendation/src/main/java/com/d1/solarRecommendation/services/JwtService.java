@@ -35,9 +35,11 @@ public class JwtService {//TODO:To generate, decode, or validate a JSON Web toke
       return claimsResolver.apply(claims);
   }
 
-  public  String generateToken(UserDetails userDetails){
-   return  generateToken(new HashMap<>(), userDetails);
-  }
+    public String generateToken(UserDetails userDetails, Long userId) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("id", userId); // Add the user ID to the claims
+        return generateToken(extraClaims, userDetails);
+    }
 
   public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
    return  buildToken(extraClaims, userDetails, jwtExpiration);
@@ -84,6 +86,9 @@ public class JwtService {//TODO:To generate, decode, or validate a JSON Web toke
       byte[] keyBytes = Decoders.BASE64.decode(secretKey);
       return Keys.hmacShaKeyFor(keyBytes);
   }
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", Long.class));
+    }
 
 
 }

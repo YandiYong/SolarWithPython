@@ -1,11 +1,13 @@
 package com.d1.solarRecommendation.controllers;
 
+import com.d1.solarRecommendation.auth.AuthenticationResponse;
 import com.d1.solarRecommendation.entities.User;
 import com.d1.solarRecommendation.services.AuthenticationService;
 import com.d1.solarRecommendation.services.JwtService;
 import com.d1.solarRecommendation.services.UserService;
 import com.d1.solarRecommendation.services.dtos.LoginUserDto;
 import com.d1.solarRecommendation.services.dtos.RegisterUserDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,23 +27,30 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto){
-        User registerUser = authenticationService.signup(registerUserDto);
-        return  ResponseEntity.ok(registerUser);
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterUserDto registerUserDto){
+        //User registerUser = authenticationService.signup(registerUserDto);
+        return  ResponseEntity.ok(authenticationService.signup(registerUserDto));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto){
-        User authenticatedUser = authenticationService.authenticate(loginUserDto);
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody LoginUserDto loginUserDto){
+        //User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
-        String jwtToken = jwtService.generateToken(authenticatedUser);
+//        String jwtToken = jwtService.generateToken(authenticatedUser);
+//
+//       LoginResponse loginResponse = new LoginResponse();
+//       loginResponse.setToken(jwtToken);
+//       loginResponse.setExpiresIn(jwtService.getExpirationTime());
 
-       LoginResponse loginResponse = new LoginResponse();
-       loginResponse.setToken(jwtToken);
-       loginResponse.setExpiresIn(jwtService.getExpirationTime());
+        return ResponseEntity.ok(authenticationService.authenticate(loginUserDto));
 
-        return ResponseEntity.ok(loginResponse);
+    }
 
+    @GetMapping("/user/id")
+    public ResponseEntity<Long> getLoggedInUserId(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        Long userId = jwtService.extractUserId(token);
+        return ResponseEntity.ok(userId);
     }
 
 
