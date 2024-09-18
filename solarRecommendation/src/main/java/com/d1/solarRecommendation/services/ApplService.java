@@ -1,7 +1,6 @@
 package com.d1.solarRecommendation.services;
 
 import com.d1.solarRecommendation.entities.Appliances;
-import com.d1.solarRecommendation.services.dtos.AddApplDto;
 
 import java.util.List;
 
